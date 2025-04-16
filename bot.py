@@ -16,8 +16,8 @@ dp = Dispatcher(bot)
 @dp.message_handler(commands=['start'])
 async def cmd_start(message: types.Message):
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    buttons = ["📍 Найти золотомат", "💰 Оценить золото"] 
-    buttons = ["🛒 Купить слиток", "📤 Продать слитки"]
+    buttons = ["📍 Найти золотомат", "💰 Оценить золото"^ 
+    "🛒 Купить слиток", "📤 Продать слитки"]
     keyboard.add(*buttons)
     await message.answer("👋 Добро пожаловать в GOLDEXROBOT!!\nВыберите действие:", reply_markup=keyboard)
 
