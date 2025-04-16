@@ -20,27 +20,25 @@ main_menu.add('📍 Найти золотомат', '💰 Оценить зол�
 
 @dp.message_handler(commands=['start'])
 async def send_welcome(message: types.Message):
-    await message.answer("👋 Добро пожаловать!\nВыберите действие:", reply_markup=main_menu)
+    await message.answer("👋 Добро пожаловать в GOLDEXROBOT!!\nВыберите действие:", reply_markup=main_menu)
 
 @dp.message_handler(lambda message: message.text == '📍 Найти золотомат')
 async def find_zolotomat(message: types.Message):
-    await message.answer("Перейдите по ссылке, чтобы найти золотомат: https://goldexrobot.ru/contacts")
+    await message.answer("Перейдите по ссылке, чтобы найти ближайший к Вам золотомат: https://goldexrobot.ru/contacts")
 
 @dp.message_handler(lambda message: message.text == '💰 Оценить золото')
 async def calc_gold(message: types.Message):
-    await message.answer("Перейдите по ссылке для расчёта: https://goldexrobot.ru/calc")
+    await message.answer("Перейдите по ссылке для примерного расчёта: https://goldexrobot.ru/calc")
 
 @dp.message_handler(lambda message: message.text == '🛒 Купить слиток')
 async def buy_bullion(message: types.Message):
-    await message.answer("Перейдите по ссылке для покупки: https://investingold.club/buy-bullions\n\n"
+    await message.answer("Перейдите по ссылке для покупки золотого слитка: https://investingold.club/buy-bullions\n\n"
                          "Пожалуйста, оставьте свой контакт (телефон), чтобы мы могли с вами связаться.")
-    await message.answer("Введите ваш контакт:")
 
 @dp.message_handler(lambda message: message.text == '📤 Продать слитки')
 async def sell_bullion(message: types.Message):
-    await message.answer("Перейдите по ссылке для продажи: https://investingold.club/buy-bullions\n\n"
+    await message.answer("Перейдите по ссылке для продажи золотых слитков: https://investingold.club/buy-bullions\n\n"
                          "Пожалуйста, оставьте свой контакт (телефон), чтобы мы могли с вами связаться.")
-    await message.answer("Введите ваш контакт:")
 
 @dp.message_handler(lambda message: message.text == '👤 Мои заявки')
 async def my_requests(message: types.Message):
