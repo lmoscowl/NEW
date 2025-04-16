@@ -12,18 +12,16 @@ dp = Dispatcher(bot)
 async def cmd_start(message: types.Message):
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
 
-    # Первая строка
     keyboard.row(
         types.KeyboardButton("📍 Найти золотомат"),
         types.KeyboardButton("💰 Оценить золото")
     )
-    # Вторая строка
     keyboard.row(
         types.KeyboardButton("🛒 Купить слиток"),
         types.KeyboardButton("📤 Продать слитки")
     )
 
-    await message.answer("👋 Добро пожаловать!\nВыберите действие:", reply_markup=keyboard)
+    await message.answer("👋 Добро пожаловать в GOLDEX ROBOT!\nВыберите действие:", reply_markup=keyboard)
 
 
 @dp.message_handler(lambda message: message.text == "📍 Найти золотомат")
@@ -51,4 +49,12 @@ async def sell_bullion(message: types.Message):
 
 
 if __name__ == '__main__':
-    executor.start_polling(dp, skip_updates=True)
+    import asyncio
+
+    async def on_startup():
+        await bot.delete_webhook()
+
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(on_startup())
+
+    executor.start_polling(dp_
