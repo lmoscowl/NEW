@@ -5,7 +5,7 @@ from aiogram.types import ParseMode
 from aiogram.utils import executor
 import requests
 
-API_TOKEN = 'YOUR_API_TOKEN'  # Замените на ваш API токен бота
+API_TOKEN = '7931009664:AAHwqyiEOSkuGEvCZ1iSCUtUiELBMT9Po7Q'  # Замените на ваш API токен бота
 ADMIN_CHAT_ID = '@lmoscowl77'  # Чат для уведомлений
 
 logging.basicConfig(level=logging.INFO)
