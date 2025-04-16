@@ -21,7 +21,7 @@ async def cmd_start(message: types.Message):
         types.KeyboardButton("📤 Продать слитки")
     )
 
-    await message.answer("👋 Добро пожаловать!\nВыберите действие:", reply_markup=keyboard)
+    await message.answer("👋 Добро пожаловать в GOLDEX ROBOT!\nВыберите действие:", reply_markup=keyboard)
 
 
 @dp.message_handler(lambda message: message.text == "📍 Найти золотомат")
