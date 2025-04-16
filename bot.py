@@ -21,7 +21,7 @@ main_menu.add('🛒 Купить слитки', '📤 Продать слитк�
 
 @dp.message_handler(commands=['start'])
 async def send_welcome(message: types.Message):
-    await message.answer("👋 Добро пожаловать в GOLDEXROBOT!\nВыберите действие:", reply_markup=main_menu)
+    await message.answer("**👋 Добро пожаловать в GOLDEXROBOT!\nВыберите действие:**", reply_markup=main_menu)
 
 @dp.message_handler(lambda message: message.text == '📍 Найти золотомат')
 async def find_zolotomat(message: types.Message):
