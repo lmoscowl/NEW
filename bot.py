@@ -16,10 +16,19 @@ dp = Dispatcher(bot)
 @dp.message_handler(commands=['start'])
 async def cmd_start(message: types.Message):
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    buttons = ["📍 Найти золотомат", "💰 Оценить золото", 
-    "🛒 Купить слиток", "📤 Продать слитки"]
-    keyboard.add(*buttons)
-    await message.answer("👋 Добро пожаловать в GOLDEXROBOT!!\nВыберите действие:", reply_markup=keyboard)
+
+    # Первая строка
+    keyboard.row(
+        types.KeyboardButton("📍 Найти золотомат"),
+        types.KeyboardButton("💰 Оценить золото")
+    )
+    # Вторая строка
+    keyboard.row(
+        types.KeyboardButton("🛒 Купить слиток"),
+        types.KeyboardButton("📤 Продать слитки")
+    )
+
+    await message.answer("👋 Добро пожаловать в GOLDEX ROBOT!\nВыберите действие:", reply_markup=keyboard)
 
 
 @dp.message_handler(lambda message: message.text == "📍 Найти золотомат")
@@ -66,4 +75,3 @@ if __name__ == '__main__':
         host='0.0.0.0',
         port=PORT,
     )
-    
