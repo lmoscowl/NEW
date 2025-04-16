@@ -15,7 +15,7 @@ dp = Dispatcher(bot)
 # Главное меню без "Мои заявки"
 main_menu = types.ReplyKeyboardMarkup(resize_keyboard=True)
 main_menu.add('📍 Найти золотомат', '💰 Оценить золото')
-main_menu.add('🛒 Купить слиток', '📤 Продать слитки')
+main_menu.add('🛒 Купить слитки', '📤 Продать слитки')
 
 # Функции обработки команд
 
@@ -31,7 +31,7 @@ async def find_zolotomat(message: types.Message):
 async def calc_gold(message: types.Message):
     await message.answer("Перейдите по ссылке для расчёта: https://goldexrobot.ru/calc")
 
-@dp.message_handler(lambda message: message.text == '🛒 Купить слиток')
+@dp.message_handler(lambda message: message.text == '🛒 Купить слитки')
 async def buy_bullion(message: types.Message):
     await message.answer("Перейдите по ссылке для покупки: https://investingold.club/buy-bullions\n\n")
 
