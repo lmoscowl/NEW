@@ -9,12 +9,12 @@ logger = logging.getLogger(__name__)
 
 API_TOKEN = os.getenv("BOT_TOKEN")
 WEBHOOK_PATH = '/webhook'
-WEBHOOK_SECRET = 'my_secret_key'  # любой ключ для безопасности
+WEBHOOK_SECRET = 'my_secret_key'
 WEBAPP_HOST = '0.0.0.0'
 WEBAPP_PORT = int(os.getenv("PORT", 10000))
 
 bot = Bot(token=API_TOKEN)
-dp = Dispatcher(bot, storage=MemoryStorage())
+dp = Dispatcher(storage=MemoryStorage())
 
 @dp.message_handler(commands=['start'])
 async def cmd_start(message: types.Message):
@@ -67,7 +67,7 @@ async def handle_webhook(request):
     if request.headers.get("X-Telegram-Bot-Api-Secret-Token") != WEBHOOK_SECRET:
         return web.Response(status=403)
     update = await request.json()
-    await dp.feed_raw_update(bot, update)
+    await dp.feed_update(bot, types.Update(**update))
     return web.Response()
 
 def main():
