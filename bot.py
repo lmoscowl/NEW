@@ -1,7 +1,7 @@
 import os
 import logging
 from aiogram import Bot, Dispatcher, types
-from aiogram.utils import executor
+from aiogram.utils.executor import start_webhook
 
 # Логирование
 logging.basicConfig(level=logging.INFO)
@@ -9,6 +9,14 @@ logger = logging.getLogger(__name__)
 
 # Токен бота из переменных окружения
 API_TOKEN = os.getenv("BOT_TOKEN")
+
+# Webhook параметры
+WEBHOOK_HOST = os.getenv("RENDER_EXTERNAL_URL")
+WEBHOOK_PATH = "/webhook"
+WEBHOOK_URL = f"{WEBHOOK_HOST}{WEBHOOK_PATH}"
+
+WEBAPP_HOST = "0.0.0.0"
+WEBAPP_PORT = int(os.getenv("PORT", 5000))
 
 # Инициализация бота и диспетчера
 bot = Bot(token=API_TOKEN)
@@ -19,7 +27,6 @@ dp = Dispatcher(bot)
 async def cmd_start(message: types.Message):
     logger.info(f"Команда /start от пользователя {message.from_user.id}")
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
-
     keyboard.row(
         types.KeyboardButton("📍 Найти золотомат"),
         types.KeyboardButton("💰 Оценить золото")
@@ -28,7 +35,6 @@ async def cmd_start(message: types.Message):
         types.KeyboardButton("🛒 Купить слиток"),
         types.KeyboardButton("📤 Продать слитки")
     )
-
     await message.answer("👋 Добро пожаловать в GOLDEX ROBOT!\nВыберите действие:", reply_markup=keyboard)
 
 
@@ -60,17 +66,26 @@ async def sell_bullion(message: types.Message):
     await message.answer("Выберите действие:", reply_markup=keyboard)
 
 
+async def on_startup(dp):
+    await bot.set_webhook(WEBHOOK_URL)
+    logger.info(f"✅ Webhook установлен: {WEBHOOK_URL}")
+    me = await bot.get_me()
+    logger.info(f"🤖 Бот запущен: {me.full_name} [@{me.username}]")
+
+
+async def on_shutdown(dp):
+    logger.info("🔻 Удаляем Webhook...")
+    await bot.delete_webhook()
+
+
 if __name__ == '__main__':
-    import asyncio
-
-    async def on_startup():
-        await bot.delete_webhook()
-        logger.info("✅ Webhook удалён перед стартом long polling.")
-        me = await bot.get_me()
-        logger.info(f"🤖 Бот запущен: {me.full_name} [@{me.username}]")
-
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(on_startup())
-
-    logger.info("🚀 Старт long polling...")
-    executor.start_polling(dp, skip_updates=True)
+    logger.info("🚀 Старт бота на Webhook...")
+    start_webhook(
+        dispatcher=dp,
+        webhook_path=WEBHOOK_PATH,
+        on_startup=on_startup,
+        on_shutdown=on_shutdown,
+        skip_updates=True,
+        host=WEBAPP_HOST,
+        port=WEBAPP_PORT,
+    )
