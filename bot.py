@@ -21,7 +21,7 @@ main_menu.add('🛒 Купить слиток', '📤 Продать слитк�
 
 @dp.message_handler(commands=['start'])
 async def send_welcome(message: types.Message):
-    await message.answer("👋 Добро пожаловать!\nВыберите действие:", reply_markup=main_menu)
+    await message.answer("👋 Добро пожаловать в GOLDEXROBOT!\nВыберите действие:", reply_markup=main_menu)
 
 @dp.message_handler(lambda message: message.text == '📍 Найти золотомат')
 async def find_zolotomat(message: types.Message):
@@ -33,13 +33,11 @@ async def calc_gold(message: types.Message):
 
 @dp.message_handler(lambda message: message.text == '🛒 Купить слиток')
 async def buy_bullion(message: types.Message):
-    await message.answer("Перейдите по ссылке для покупки: https://investingold.club/buy-bullions\n\n"
-                         "Пожалуйста, напишите сюда ваш контакт (телефон или имя), чтобы мы могли связаться.")
+    await message.answer("Перейдите по ссылке для покупки: https://investingold.club/buy-bullions\n\n")
 
 @dp.message_handler(lambda message: message.text == '📤 Продать слитки')
 async def sell_bullion(message: types.Message):
-    await message.answer("Перейдите по ссылке для продажи: https://investingold.club/buy-bullions\n\n"
-                         "Пожалуйста, напишите сюда ваш контакт (телефон или имя), чтобы мы могли связаться.")
+    await message.answer("Перейдите по ссылке для продажи: https://investingold.club/buy-bullions\n\n")
 
 @dp.message_handler()
 async def handle_contact(message: types.Message):
