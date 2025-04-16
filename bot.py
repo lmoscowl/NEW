@@ -21,7 +21,7 @@ async def cmd_start(message: types.Message):
         types.KeyboardButton("📤 Продать слитки")
     )
 
-    await message.answer("👋 Добро пожаловать в GOLDEX ROBOT!\nВыберите действие:", reply_markup=keyboard)
+    await message.answer("👋 Добро пожаловать!\nВыберите действие:", reply_markup=keyboard)
 
 
 @dp.message_handler(lambda message: message.text == "📍 Найти золотомат")
@@ -57,4 +57,4 @@ if __name__ == '__main__':
     loop = asyncio.get_event_loop()
     loop.run_until_complete(on_startup())
 
-    executor.start_polling(dp_
+    executor.start_polling(dp, skip_updates=True)
