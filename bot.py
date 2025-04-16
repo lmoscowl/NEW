@@ -1,53 +1,68 @@
-
-import logging
+import os
 from aiogram import Bot, Dispatcher, types
-from aiogram.types import ParseMode
-from aiogram.utils import executor
-import requests
+from aiogram.utils.executor import start_webhook
 
-API_TOKEN = '7931009664:AAHwqyiEOSkuGEvCZ1iSCUtUiELBMT9Po7Q'  # Замените на ваш API токен бота
-ADMIN_CHAT_ID = '@lmoscowl77'  # Чат для уведомлений
+API_TOKEN = os.getenv("BOT_TOKEN")
+WEBHOOK_HOST = os.getenv("WEBHOOK_HOST")  # https://твой-рендер-домен.onrender.com
+WEBHOOK_PATH = f"/webhook/{API_TOKEN}"
+WEBHOOK_URL = f"{WEBHOOK_HOST}{WEBHOOK_PATH}"
 
-logging.basicConfig(level=logging.INFO)
+PORT = int(os.environ.get("PORT", 10000))
+
 bot = Bot(token=API_TOKEN)
 dp = Dispatcher(bot)
 
-# Главное меню без "Мои заявки"
-main_menu = types.ReplyKeyboardMarkup(resize_keyboard=True)
-main_menu.add('📍 Найти золотомат', '💰 Оценить золото')
-main_menu.add('🛒 Купить слитки', '📤 Продать слитки')
-
-# Функции обработки команд
 
 @dp.message_handler(commands=['start'])
-async def send_welcome(message: types.Message):
-    await message.answer("👋 Добро пожаловать в GOLDEXROBOT!\nВыберите действие:", reply_markup=main_menu)
+async def cmd_start(message: types.Message):
+    keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
+    buttons = ["📍 Найти золотомат", "💰 Оценить золото", "🛒 Купить слиток", "📤 Продать слитки"]
+    keyboard.add(*buttons)
+    await message.answer("👋 Добро пожаловать в GOLDEXROBOT!!\nВыберите действие:", reply_markup=keyboard)
 
-@dp.message_handler(lambda message: message.text == '📍 Найти золотомат')
-async def find_zolotomat(message: types.Message):
-    await message.answer("Перейдите по ссылке, чтобы найти ближайший к Вам золотомат: https://goldexrobot.ru/contacts")
 
-@dp.message_handler(lambda message: message.text == '💰 Оценить золото')
+@dp.message_handler(lambda message: message.text == "📍 Найти золотомат")
+async def find_terminal(message: types.Message):
+    await message.answer("📍 Найти ближайший золотомат можно тут:\nhttps://goldexrobot.ru/contacts")
+
+
+@dp.message_handler(lambda message: message.text == "💰 Оценить золото")
 async def calc_gold(message: types.Message):
-    await message.answer("Перейдите по ссылке для примерного расчёта: https://goldexrobot.ru/calc")
+    await message.answer("💰 Оценить своё золото можно тут:\nhttps://goldexrobot.ru/calc")
 
-@dp.message_handler(lambda message: message.text == '🛒 Купить слитки')
+
+@dp.message_handler(lambda message: message.text == "🛒 Купить слиток")
 async def buy_bullion(message: types.Message):
-    await message.answer("Перейдите по ссылке для покупки золотых слитков: https://investingold.club/buy-bullions\n\n")
+    keyboard = types.InlineKeyboardMarkup()
+    keyboard.add(types.InlineKeyboardButton("🛒 Заказать", url="https://investingold.club/buy-bullions"))
+    await message.answer("Выберите действие:", reply_markup=keyboard)
 
-@dp.message_handler(lambda message: message.text == '📤 Продать слитки')
+
+@dp.message_handler(lambda message: message.text == "📤 Продать слитки")
 async def sell_bullion(message: types.Message):
-    await message.answer("Перейдите по ссылке для продажи золотых слитков: https://investingold.club/buy-bullions\n\n")
+    keyboard = types.InlineKeyboardMarkup()
+    keyboard.add(types.InlineKeyboardButton("📤 Продать", url="https://investingold.club/buy-bullions"))
+    await message.answer("Выберите действие:", reply_markup=keyboard)
 
-@dp.message_handler()
-async def handle_contact(message: types.Message):
-    # Любое сообщение пользователя считается заявкой
-    if message.text:
-        contact_info = message.text
-        await bot.send_message(ADMIN_CHAT_ID, f"Новая заявка от {message.from_user.full_name} ({message.from_user.id}):\n{contact_info}")
-        await message.answer("Спасибо! Ваш контакт отправлен менеджеру.")
-    else:
-        await message.answer("Что-то пошло не так. Попробуйте ещё раз.")
+
+# Webhook startup
+async def on_startup(dp):
+    await bot.set_webhook(WEBHOOK_URL)
+
+
+# Webhook shutdown
+async def on_shutdown(dp):
+    await bot.delete_webhook()
+
 
 if __name__ == '__main__':
-    executor.start_polling(dp, skip_updates=True)
+    start_webhook(
+        dispatcher=dp,
+        webhook_path=WEBHOOK_PATH,
+        on_startup=on_startup,
+        on_shutdown=on_shutdown,
+        skip_updates=True,
+        host='0.0.0.0',
+        port=PORT,
+    )
+    
