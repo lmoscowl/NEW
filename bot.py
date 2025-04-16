@@ -2,8 +2,8 @@ import os
 from aiogram import Bot, Dispatcher, types
 from aiogram.utils.executor import start_webhook
 
-API_TOKEN = os.getenv("7931009664:AAHwqyiEOSkuGEvCZ1iSCUtUiELBMT9Po7Q")
-WEBHOOK_HOST = os.getenv("https://bot-1-9axx.onrender.com")  # https://твой-рендер-домен.onrender.com
+API_TOKEN = os.getenv("BOT_TOKEN")
+WEBHOOK_HOST = os.getenv("WEBHOOK_HOST")  # https://твой-рендер-домен.onrender.com
 WEBHOOK_PATH = f"/webhook/{API_TOKEN}"
 WEBHOOK_URL = f"{WEBHOOK_HOST}{WEBHOOK_PATH}"
 
