@@ -37,7 +37,7 @@ async def buy_bullion(message: types.Message):
 
 @dp.message_handler(lambda message: message.text == '📤 Продать слитки')
 async def sell_bullion(message: types.Message):
-    await message.answer("Перейдите по ссылке для продажи: https://investingold.club/buy-bullions\n\n"
+    await message.answer("Перейдите по ссылке для продажи золотых слитков: https://investingold.club/buy-bullions\n\n"
                          "Пожалуйста, оставьте свой контакт (телефон), чтобы мы могли с вами связаться.")
 
 @dp.message_handler()
