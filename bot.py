@@ -41,4 +41,17 @@ async def cmd_start(message: types.Message):
 @router.message(F.text == "📍 Найти золотомат")
 async def find_terminal(message: types.Message):
     logger.info(f"Пользователь {message.from_user.id} выбрал 'Найти золотомат'")
-    await message.answer("
+    await message.answer("📍 Найти ближайший золотомат можно тут:\nhttps://goldexrobot.ru/contacts")
+
+@router.message(F.text == "💰 Оценить золото")
+async def calc_gold(message: types.Message):
+    logger.info(f"Пользователь {message.from_user.id} выбрал 'Оценить золото'")
+    await message.answer("💰 Оценить своё золото можно тут:\nhttps://goldexrobot.ru/calc")
+
+@router.message(F.text == "🛒 Купить слиток")
+async def buy_bullion(message: types.Message):
+    logger.info(f"Пользователь {message.from_user.id} выбрал 'Купить слиток'")
+    keyboard = InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(text="🛒 Заказать", url="https://investingold.club/buy-bullions")]
+    ])
+    await
